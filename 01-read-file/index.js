@@ -1,20 +1,35 @@
-const { stdout } = process;
+const { stdout, stderr } = process;
 const fs = require('fs');
 const path = require('path');
+const {
+  colorSuccessMessage,
+  colorErrorMessage,
+} = require('../utils/colorConsoleText');
 
-const stream = new fs.ReadStream(path.join(__dirname, 'text.txt'), {
-  encoding: 'utf-8',
-});
-let string = '';
+function readFromFile(pathToFile, encoding = 'utf-8') {
+  let string = '';
 
-stream.on('readable', function () {
-  const data = stream.read();
-  if (data === null) {
-    return;
-  }
-  string += data;
-});
+  const stream = new fs.ReadStream(pathToFile, {
+    encoding,
+  });
 
-stream.on('end', function () {
-  stdout.write(string);
-});
+  stream.on('error', (err) =>
+    stderr.write(
+      colorErrorMessage(`\nПроизошла ошибка при чтении файла:\n${err}\n\n`),
+    ),
+  );
+
+  stream.on('readable', function () {
+    const data = stream.read();
+    if (data === null) {
+      return;
+    }
+    string += data;
+  });
+
+  stream.on('end', function () {
+    stdout.write(colorSuccessMessage(string));
+  });
+}
+
+readFromFile(path.join(__dirname, 'text.txt'));
