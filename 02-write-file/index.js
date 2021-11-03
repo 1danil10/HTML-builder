@@ -1,6 +1,15 @@
 const { stdin, stdout } = process;
 const fs = require('fs');
 const path = require('path');
+const { colorSuccessMessage } = require('../utils/colorConsoleText');
+
+const helloMsg = `
+=======================
+=                     =
+=   PRINT SOME TEXT   =
+=                     =
+=======================
+`;
 const byeMsg = `
 =======================
 =                     =
@@ -9,25 +18,32 @@ const byeMsg = `
 =======================
 `;
 
-function saveInputToFile(filename) {
-  const stream = fs.createWriteStream(path.join(__dirname, filename));
+function saveInputToFile(filePath) {
+  const stream = fs.createWriteStream(filePath);
+  stdout.write(colorSuccessMessage(`\n ${helloMsg}\n\n`));
 
   stdin.on('data', (data) => {
     const parsed = data.toString();
 
-    if (parsed.trim().toLowerCase() === 'exit') {
+    if (parsed === 'exit') {
       stream.end();
       process.exit();
     }
 
     stream.write(parsed);
+    stdout.write(
+      colorSuccessMessage(`File updated. Appended value:   ${parsed}`),
+    );
   });
 
   process.on('SIGINT', () => {
     stream.end();
     process.exit();
   });
-  process.on('exit', () => stdout.write(`\n ${byeMsg}\n\n`));
+
+  process.on('exit', () =>
+    stdout.write(colorSuccessMessage(`\n ${byeMsg}\n\n`)),
+  );
 }
 
-saveInputToFile('output.txt');
+saveInputToFile(path.join(__dirname, 'output.txt'));
