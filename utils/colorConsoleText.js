@@ -17,7 +17,7 @@ function colorStringForOutput(textColor, string) {
     TEXT_COLORS.find((el) => el.name === textColor.toLowerCase()) ??
     whiteTextColor;
 
-  return `\x1b[${textColorStart}m${string}\x1b[${textColorEnd}m`;
+  return `\x1b[${textColorStart}m${string}\x1b[${textColorEnd}m\x1b[0m`;
 }
 
 const colorSuccessMessage = (str) =>
