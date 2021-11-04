@@ -6,7 +6,7 @@ const {
   colorErrorMessage,
 } = require('../utils/colorConsoleText');
 
-function readFromFile(pathToFile, encoding = 'utf-8') {
+function readFromFile(pathToFile, encoding = 'utf8') {
   let string = '';
 
   const stream = new fs.ReadStream(pathToFile, {
