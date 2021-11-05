@@ -13,7 +13,7 @@ function getFolderFiles(folderPath) {
     if (err) {
       throw new Error(colorErrorMessage(`Can't read folder: \n ${err}`));
     }
-
+    showFileInfo({ name: 'Name', ext: 'Extension', size: 'Size, bytes' });
     files.forEach((file) => {
       getFileInfo(folderPath, file, showFileInfo);
     });
@@ -37,9 +37,9 @@ function getFileInfo(folderPath, fileName, cb) {
 
 function showFileInfo({ name, ext, size }) {
   const formattedName = colorStringForOutput('blue', name.padEnd(10, ' '));
-  const formattedExt = colorStringForOutput('yellow', ext.padEnd(5, ' '));
+  const formattedExt = colorStringForOutput('yellow', ext.padEnd(10, ' '));
   const formattedSize = colorStringForOutput('cyan', size.toString());
-  stdout.write(`${formattedName}${formattedExt}${formattedSize + 'bytes'}\n`);
+  stdout.write(`${formattedName}${formattedExt}${formattedSize}\n`);
 }
 
 getFolderFiles(path.join(__dirname, folder));
