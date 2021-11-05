@@ -53,7 +53,6 @@ async function readFile(filePath) {
         stdout.write(colorErrorMessage(`Can't open file ${filePath}`));
       }
     });
-
     return readStream.on('end', function () {
       resolve(file.join(''));
     });
