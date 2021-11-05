@@ -20,10 +20,11 @@ function colorStringForOutput(textColor, string) {
   return `\x1b[${textColorStart}m${string}\x1b[${textColorEnd}m\x1b[0m`;
 }
 
-const colorSuccessMessage = (str) =>
-  colorStringForOutput.call(null, 'green', str);
-const colorErrorMessage = (str) => colorStringForOutput.call(null, 'red', str);
+const colorSuccessMessage = colorStringForOutput.bind(null, 'green');
+const colorErrorMessage = colorStringForOutput.bind(null, 'red');
+const colorActionMessage = colorStringForOutput.bind(null, 'blue');
 
 module.exports.colorStringForOutput = colorStringForOutput;
 module.exports.colorSuccessMessage = colorSuccessMessage;
 module.exports.colorErrorMessage = colorErrorMessage;
+module.exports.colorActionMessage = colorActionMessage;
