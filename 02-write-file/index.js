@@ -1,7 +1,10 @@
 const { stdin, stdout } = process;
 const fs = require('fs');
 const path = require('path');
-const { colorSuccessMessage } = require('../utils/colorConsoleText');
+const {
+  colorSuccessMessage,
+  colorActionMessage,
+} = require('../utils/colorConsoleText');
 
 const helloMsg = `
 =======================
@@ -25,14 +28,15 @@ function saveInputToFile(filePath) {
   stdin.on('data', (data) => {
     const parsed = data.toString();
 
-    if (parsed === 'exit') {
+    if (parsed.trim() === 'exit') {
       stream.end();
       process.exit();
     }
-
     stream.write(parsed);
     stdout.write(
-      colorSuccessMessage(`File updated. Appended value:   ${parsed}`),
+      `File ${colorActionMessage(
+        'updated',
+      )}. Appended value:   ${colorSuccessMessage(parsed)}`,
     );
   });
 
